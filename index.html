@@ -144,8 +144,9 @@
   <script>
     const canvas = document.getElementById('dpCanvas');
     const ctx = canvas.getContext('2d');
+    // Use JPEG as the background image
     const baseImage = new Image();
-    baseImage.src = "WCC IWBA.png"; // your background image
+    baseImage.src = "WCC IWBA.jpg"; // <-- Make sure this file is in your repo!
     const placeholderImg = new Image();
     placeholderImg.src = "https://via.placeholder.com/600x600.png?text=Profile+Photo";
     let uploadedImg = null;
