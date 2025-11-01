@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=1140, initial-scale=1.0" />
   <title>WCC 2025 Personalized DP</title>
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
   <!-- Open Graph and Twitter Card for social media thumbnail preview -->
   <meta property="og:title" content="WCC 2025 Personalized DP" />
@@ -143,9 +144,9 @@
   <script>
     const canvas = document.getElementById('dpCanvas');
     const ctx = canvas.getContext('2d');
-    // Use the optimized JPEG from ImageKit as the background image
+    // Use JPEG as the background image
     const baseImage = new Image();
-    baseImage.src = "https://ik.imagekit.io/rcnwarri/WCC%20IWBA.jpg?updatedAt=1761992324229";
+    baseImage.src = "WCC IWBA.jpg"; // <-- Make sure this file is in your repo!
     const placeholderImg = new Image();
     placeholderImg.src = "https://via.placeholder.com/600x600.png?text=Profile+Photo";
     let uploadedImg = null;
