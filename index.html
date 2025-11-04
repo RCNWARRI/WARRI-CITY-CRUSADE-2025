@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1140, initial-scale=1.0" />
+  <title>WCC 2025 Personalized DP</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Open Graph & Twitter (update these URLs if you host images elsewhere) -->
+  <meta property="og:title" content="WCC 2025 Personalized DP" />
+  <meta property="og:description" content="Create your personalized DP for Warri City Crusade 2025!" />
+  <meta property="og:image" content="https://rcnwarri.github.io/WARRI-CITY-CRUSADE-2025/thumbnail.jpg" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://rcnwarri.github.io/WARRI-CITY-CRUSADE-2025/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="WCC 2025 Personalized DP" />
+  <meta name="twitter:description" content="Create your personalized DP for Warri City Crusade 2025!" />
+  <meta name="twitter:image" content="https://rcnwarri.github.io/WARRI-CITY-CRUSADE-2025/thumbnail.jpg" />
+
+  <!-- Preload local background to improve perceived load -->
+  <link rel="preload" as="image" href="WCC IWBA dp frame.png">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <style>
+    body {
+      background: linear-gradient(135deg, #C1ABF5 0%, #c2e9fb 100%);
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .container {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(15, 68, 60, 0.14);
+      padding: 32px 24px 24px 24px;
+      max-width: 640px;
+      width: 100%;
+      margin: 40px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      margin-top: 0;
+      margin-bottom: 18px;
+      color: #17594A;
+      font-size: 2.1rem;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+    .dp-preview {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+    /* The canvas logical size is 1500x1500 (high-res). CSS limits display size. */
+    canvas {
+      width: 100%;
+      max-width: 540px;
+      border-radius: 18px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      background: #f8fafb;
+      transition: box-shadow 0.3s;
+      display: block;
+    }
+    .controls {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+    input[type="file"], input[type="text"] {
+      width: 90%;
+      max-width: 340px;
+      padding: 13px 12px;
+      font-size: 17px;
+      border-radius: 8px;
+      border: 1.5px solid #17594A;
+      background: #f8fafb;
+      transition: border-color 0.2s;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+    input[type="text"]:focus {
+      border-color: #0F443C;
+      outline: none;
+    }
+    button {
+      width: 92%;
+      max-width: 340px;
+      padding: 14px 0;
+      font-size: 19px;
+      font-weight: 700;
+      background: #17594A;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(15, 68, 60, 0.09);
+      transition: background 0.2s, box-shadow 0.2s;
+      margin: 0 auto;
+      margin-top: 6px;
+    }
+    button:hover {
+      background: #09706b;
+      box-shadow: 0 4px 14px rgba(15, 68, 60, 0.16);
+    }
+    .footer {
+      margin-top: 16px;
+      color: #888;
+      font-size: 15px;
+      text-align: center;
+    }
+    @media (max-width: 720px) {
+      .container {
+        padding: 16px 2px 16px 2px;
+        max-width: 98vw;
+      }
+      canvas, input[type="file"], input[type="text"], button {
+        max-width: 98vw;
+      }
+    }
+
+    /* Simple loading placeholder while base image loads */
+    .canvas-wrapper { position: relative; }
+    .loader {
+      position: absolute;
+      inset: 0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(255,255,255,0.6);
+      font-weight:700;
+      color:#17594A;
+      border-radius:18px;
+      pointer-events:none;
+    }
+    .loader.hidden { display:none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>WCC 2025 Personalized DP</h1>
+
+    <div class="dp-preview">
+      <div class="canvas-wrapper" style="width:100%; max-width:540px;">
+        <!-- canvas logical size is 1500x1500 for better export resolution -->
+        <canvas id="dpCanvas" width="1500" height="1500"></canvas>
+        <div id="loader" class="loader">Loading background…</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <input type="file" id="imageUpload" accept="image/*" />
+      <input type="text" id="nameInput" placeholder="Enter your name" />
+      <button type="button" id="downloadBtn">Download DP</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    &copy; 2025 The True Light Crusade. Made with ❤️
+  </div>
+
+  <!-- Script -->
+  <script>
+    // Elements
+    const canvas = document.getElementById('dpCanvas');
+    const ctx = canvas.getContext('2d');
+    const loader = document.getElementById('loader');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    // Background image (now using the local filename you requested)
+    const baseImage = new Image();
+    baseImage.crossOrigin = "anonymous";
+    baseImage.src = "WCC IWBA dp frame.png";
+
+    // Placeholder/profile image shown inside the circular frame before user uploads
+    const placeholderImg = new Image();
+    placeholderImg.crossOrigin = "anonymous";
+    placeholderImg.src = "https://via.placeholder.com/600x600.png?text=Profile+Photo";
+
+    let uploadedImg = null;
+    let baseLoaded = false;
+    let placeholderLoaded = false;
+
+    // Show/Hide loader based on base image load state
+    function updateLoader() {
+      if (baseLoaded) {
+        loader.classList.add('hidden');
+      } else {
+        loader.classList.remove('hidden');
+      }
+    }
+
+    baseImage.onload = function() {
+      baseLoaded = true;
+      updateLoader();
+      if (placeholderLoaded) drawDP();
+      else drawDP();
+    };
+    baseImage.onerror = function() {
+      baseLoaded = false;
+      updateLoader();
+      console.error("Failed to load background image:", baseImage.src);
+    };
+
+    placeholderImg.onload = function() {
+      placeholderLoaded = true;
+      if (baseLoaded) drawDP();
+    };
+
+    // File input: read uploaded image and redraw when ready
+    document.getElementById('imageUpload').addEventListener('change', function(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        uploadedImg = new Image();
+        uploadedImg.crossOrigin = "anonymous";
+        uploadedImg.onload = function() {
+          drawDP();
+        };
+        uploadedImg.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Name input redraws on input
+    document.getElementById('nameInput').addEventListener('input', drawDP);
+
+    // Download button
+    downloadBtn.addEventListener('click', downloadDP);
+
+    function drawDP() {
+      // If base not loaded, still try to show placeholder / spinner
+      if (!baseLoaded) {
+        // clear canvas and show placeholder centered
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = "#f8fafb";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+      }
+
+      // Draw background (fit to canvas without stretching)
+      if (baseLoaded) {
+        const imgW = baseImage.width;
+        const imgH = baseImage.height;
+        const canW = canvas.width;
+        const canH = canvas.height;
+        let drawX = 0, drawY = 0, drawW = canW, drawH = canH;
+
+        const imgAspect = imgW / imgH;
+        const canAspect = canW / canH;
+        if (imgAspect > canAspect) {
+          drawW = canW;
+          drawH = canW / imgAspect;
+          drawX = 0;
+          drawY = (canH - drawH) / 2;
+        } else {
+          drawH = canH;
+          drawW = canH * imgAspect;
+          drawY = 0;
+          drawX = (canW - drawW) / 2;
+        }
+        ctx.drawImage(baseImage, drawX, drawY, drawW, drawH);
+      } else {
+        // fallback background color
+        ctx.fillStyle = "#f8fafb";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+      }
+
+      // CIRCLE (Profile Photo area) - coordinates chosen for the 1500x1500 canvas
+      const circleX = 1011;
+      const circleY = 579.4;
+      const circleRadius = 277.6;
+      const circleDiameter = circleRadius * 2;
+
+      // Choose image to draw inside circle
+      const imgToDraw = uploadedImg || (placeholderLoaded ? placeholderImg : null);
+
+      if (imgToDraw) {
+        const imgAspect = imgToDraw.width / imgToDraw.height;
+        let scale;
+        if (imgAspect > 1) {
+          // image is wider than tall
+          scale = circleDiameter / imgToDraw.height;
+        } else {
+          scale = circleDiameter / imgToDraw.width;
+        }
+        const drawWidth = imgToDraw.width * scale;
+        const drawHeight = imgToDraw.height * scale;
+        const x = circleX - drawWidth / 2;
+        const y = circleY - drawHeight / 2;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(circleX, circleY, circleRadius, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(imgToDraw, x, y, drawWidth, drawHeight);
+        ctx.restore();
+      } else {
+        // If even placeholder isn't loaded yet, draw a neutral circle
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(circleX, circleY, circleRadius, 0, Math.PI * 2);
+        ctx.fillStyle = "#ddd";
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // RECTANGLE (Name area)
+      const name = document.getElementById("nameInput").value;
+      if (name) {
+        const rectW = 680;
+        const rectH = 70;
+        const rectX = (canvas.width - rectW) / 2;
+        const rectY = 910;
+
+        ctx.save();
+        ctx.fillStyle = "#FFFFFF";
+        roundRect(ctx, rectX, rectY, rectW, rectH, 18);
+        ctx.fill();
+
+        ctx.font = "bold 43px 'Montserrat', sans-serif";
+        ctx.fillStyle = "#0F443C";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(name.toUpperCase(), rectX + rectW / 2, rectY + rectH / 2);
+        ctx.restore();
+      }
+    }
+
+    // Rounded rectangle helper
+    function roundRect(ctx, x, y, width, height, radius) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    }
+
+    // Download canvas as PNG
+    function downloadDP() {
+      const link = document.createElement('a');
+      link.download = 'WCC_2025_DP.png';
+      try {
+        link.href = canvas.toDataURL('image/png');
+      } catch (err) {
+        console.error('Download failed:', err);
+        return;
+      }
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Initial draw while things load
+    updateLoader();
+    drawDP();
+  </script>
+</body>
+</html>
